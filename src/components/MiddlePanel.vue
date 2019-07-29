@@ -201,7 +201,7 @@ export default {
     &-item {
       border-bottom: 1px solid $border;
       display: grid;
-      grid-template-columns: 60px 20px 60px auto 60px 60px;
+      grid-template-columns: 60px 40px 40px auto 60px 60px;
       align-items: center;
 
       &:first-child {

@@ -3,9 +3,11 @@
     <div class="player-info">
       <h2>
         {{ current.title }}
-        <md-icon>
-          {{ current.isLove ? 'favorite' : 'favorite_border' }}
-        </md-icon>
+        <span @click="toggleLove">
+          <md-icon>
+            {{ current.isLove ? 'favorite' : 'favorite_border' }}
+          </md-icon>
+        </span>
       </h2>
       <h3>{{ current.artist }}</h3>
     </div>
@@ -60,8 +62,9 @@
       </div>
     </div>
     <div class="player-volume">
-      <div @click="showVideo = !showVideo"><md-icon>music_video</md-icon></div>
-      <md-icon>queue_music</md-icon>
+      <div class="player-volume-video" @click="toggleVideo">
+        <md-icon>music_video</md-icon>
+      </div>
       <md-icon>volume_up</md-icon>
       <input
         type="range"
@@ -100,6 +103,12 @@ export default {
       intervalId: null,
       volume: 50
     };
+  },
+  props: {
+    openAd: {
+      type: Function,
+      default: () => {}
+    }
   },
   computed: {
     percentage() {
@@ -153,6 +162,7 @@ export default {
     play() {
       if (this.current) {
         play(this.current, this.onPlay, this.onPause, this.onEnd);
+        this.openAd();
       }
     },
     onPlay(duration, currentTime) {
@@ -192,7 +202,7 @@ export default {
       if (this.repeatMode === 'one') {
         this.play();
       } else if (!this.isLast || this.repeatMode === 'all') {
-        this.$store.commit('nextSong');
+        this.$store.commit('nextSong', this.isShuffle);
         setTimeout(() => {
           this.play();
         }, 100);
@@ -207,7 +217,7 @@ export default {
     next() {
       const isPlayingNow = this.isPlaying;
       this.stop();
-      this.$store.commit('nextSong');
+      this.$store.commit('nextSong', this.isShuffle);
       if (isPlayingNow) {
         setTimeout(() => {
           this.play();
@@ -236,6 +246,12 @@ export default {
     },
     toggleLove() {
       this.$store.commit('toggleLove', this.index);
+    },
+    toggleVideo() {
+      this.showVideo = !this.showVideo;
+      if (!this.isPlaying) {
+        this.play();
+      }
     }
   }
 };
@@ -270,6 +286,10 @@ export default {
   &-info {
     h2 {
       color: $black;
+
+      span {
+        margin-left: 8px;
+      }
     }
 
     h3 {
@@ -313,6 +333,10 @@ export default {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+
+    &-video {
+      color: $primary;
+    }
 
     i {
       margin: 0 10px;

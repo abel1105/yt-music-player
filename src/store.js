@@ -20,8 +20,11 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    nextSong(state) {
-      if (state.index + 1 === state.list.length) {
+    nextSong(state, isShuffle) {
+      if (isShuffle) {
+        state.index = Math.floor(Math.random() * state.list.length);
+        console.log(state.index);
+      } else if (state.index + 1 === state.list.length) {
         state.index = 0;
       } else {
         state.index += 1;

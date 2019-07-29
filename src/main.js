@@ -7,6 +7,7 @@ import { MdIcon, MdProgress } from 'vue-material/dist/components';
 
 import 'normalize.css';
 import 'vue-material/dist/vue-material.min.css';
+import 'animate.css';
 
 Vue.config.productionTip = false;
 
