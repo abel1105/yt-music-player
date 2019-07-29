@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VueAnalytics from 'vue-analytics';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -11,6 +12,11 @@ Vue.config.productionTip = false;
 
 Vue.use(MdIcon);
 Vue.use(MdProgress);
+
+Vue.use(VueAnalytics, {
+  id: 'UA-142485991-1',
+  router
+});
 
 new Vue({
   router,
